@@ -124,3 +124,19 @@
         width: 20%;
     }
 }
+
+.resultados {
+    margin-top: 1rem;
+}
+
+.resultados  p{
+    width: 100%;
+    background-color: var(--color-fondo);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+}
+
+.resultados  p:hover{
+
+    background-color: var(--color-fondo-dgr);
+}   

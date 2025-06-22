@@ -19,10 +19,17 @@
       </div>
     </div>
 
-    <div id="recaptcha-container"></div>
+    <div class="form-campo">
+      <div id="recaptcha-container" ></div>
+    </div>
 
-    <button type="submit" [disabled]="loginForm.invalid || !captchaValido">Iniciar sesión</button>
+    <div class="form-campo">
+      <button type="submit" [disabled]="loginForm.invalid || !captchaValido">Iniciar sesión</button>
+    </div>
 
+    <div class="form-campo">
+      <a [routerLink]="['/users/signup']" class="label-forgotp">¿Olvidaste tu contraseña?</a>
+    </div>
 
     <div *ngIf="usuarioService.error()" class="error">
       {{ usuarioService.error() }}

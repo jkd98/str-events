@@ -1,17 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
+declare const grecaptcha: any;
 
 @Component({
   selector: 'app-registro-usuario',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './registro-usuario.component.html',
-  styleUrls:['../login/login.component.css','./registro-usuario.component.css']
+  styleUrls: ['../login/login.component.css', './registro-usuario.component.css']
 
 })
-export class RegistroUsuarioComponent {
+export class RegistroUsuarioComponent implements OnInit {
+  ngOnInit(): void {
+    (window as any).captchaResolved = this.onCaptchaResolved.bind(this); // opcional si usas callback
+
+    this.loadRecaptcha().then(() => {
+      this.renderCaptcha();
+    }).catch(() => {
+      console.error('Error al cargar reCAPTCHA');
+    });
+  }
   private fb = inject(FormBuilder);
   private usuarioService = inject(UsuarioService);
 
@@ -25,6 +35,10 @@ export class RegistroUsuarioComponent {
     const rpass = control.get('rpass');
     return pass && rpass && pass.value !== rpass.value ? { passwordsNotMatch: true } : null;
   };
+
+
+  captchaToken: string = '';
+  captchaValido = false; // bandera para controlar el botón
 
   // Luego definir el FormGroup que lo usa
   registroForm: FormGroup = this.fb.group({
@@ -66,6 +80,53 @@ export class RegistroUsuarioComponent {
       error: (err) => {
         console.error('Error en el registro:', err);
         alert('Ocurrió un error al registrar el usuario');
+      }
+    });
+
+
+
+
+  }
+
+
+  onCaptchaResolved() {
+    const token = grecaptcha.getResponse();
+
+    if (token) {
+      this.captchaToken = token;
+      this.captchaValido = true;
+    } else {
+      this.captchaToken = '';
+      this.captchaValido = false;
+    }
+  }
+
+  private loadRecaptcha(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (document.getElementById('recaptcha-script')) {
+        return resolve(); // ya está cargado
+      }
+
+      const script = document.createElement('script');
+      script.id = 'recaptcha-script';
+      script.src = 'https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit';
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+
+      (window as any).onRecaptchaLoad = () => {
+        resolve();
+      };
+
+      script.onerror = reject;
+    });
+  }
+
+  private renderCaptcha(): void {
+    (window as any).grecaptcha.render('recaptcha-container', {
+      sitekey: '6LcieGYrAAAAAMBHa4bDMRpi_gjHPATTry-WrDmX',
+      callback: () => {
+        this.captchaValido = true;
       }
     });
   }

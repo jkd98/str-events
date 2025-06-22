@@ -45,7 +45,7 @@ export class SearchRoutesService {
     },
     {
       id: 'iniciar sesion',
-      title: 'Iniciar sesion',
+      title: 'Iniciar sesión',
       description: 'Inicia sesion',
       icon: 'fa-solid fa-house',
       type: 'route',
