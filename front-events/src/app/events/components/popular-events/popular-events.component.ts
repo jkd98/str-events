@@ -3,7 +3,7 @@ import { Evento, EventService } from '../../services/event.service';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { UsuarioService } from '../../../users/services/usuario.service';
 import { Router } from '@angular/router';
-
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-popular-events',
   imports: [DatePipe],
@@ -14,14 +14,20 @@ export class PopularEventsComponent implements OnInit {
   private eventService = inject(EventService);
   private userService = inject(UsuarioService);
   private router = inject(Router);
+  public baseURL = environment.apiUrl;
   public events = computed(() => {
     let evts = this.eventService.eventos().map(ev => {
       ev.reservated = this.isUserParticipant(ev);
       console.log(ev);
+      if(ev.image!=null){
+        ev.image = this.baseURL+'/public/uploads/'+ev.image;
+      }
       return ev;
     })
 
-    return evts;
+    return evts.filter(ev=>{
+      return ev.published === true;
+    });
   });
 
   public active = computed(() => {

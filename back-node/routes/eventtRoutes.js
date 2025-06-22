@@ -6,7 +6,9 @@ import {
     editarEvento,
     eliminarEvento,
     agregarParticipante,
-    anularReserva
+    anularReserva,
+    cambiarEstadoPublicado,
+    buscarEventos
 } from "../controllers/eventtController.js";
 import guardia from '../middleware/guardiaRuta.js'; 
 import checkRole from "../middleware/checkRole.js";
@@ -18,8 +20,13 @@ const router = express.Router();
 
 router.post('/', guardia, checkRole('4DMlN'), upload.single('image'), crearEvento);
 router.get('/', listarEventos);
+router.get('/buscar', buscarEventos);
+
+router.patch('/:id/publicar', guardia, checkRole('4DMlN'), cambiarEstadoPublicado);
+
 router.get('/:id', obtenerEvento);
-router.put('/:id', guardia ,editarEvento);
+router.put('/:id', guardia , checkRole('4DMlN'), upload.single('image'),editarEvento);
+// Ruta para alternar published
 router.delete('/:id', eliminarEvento);
 
 // Añadir participante al evento

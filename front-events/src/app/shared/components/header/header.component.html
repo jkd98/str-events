@@ -11,9 +11,16 @@
     <section class="section">
         <div class="section__search">
             <div class="field">
-                <input type="text" name="search" id="search" placeholder="Buscar...">
-                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" name="search" id="search" placeholder="Buscar..." #search>
+                <button (click)="buscar(search.value)"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
+            <ul class="resultados">
+                <!-- <li (click)="navegar(ruta.path)">
+                    {{ ruta.label }} ({{ ruta.path }})
+                </li> -->
+                h
+                
+            </ul>
         </div>
     </section>
 </div>

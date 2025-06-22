@@ -1,0 +1,45 @@
+<div class="filtros-container">
+  <!-- <h2>Buscar Eventos</h2> -->
+
+  <form [formGroup]="filtros" (ngSubmit)="buscar()" class="filtros-form">
+    
+    <div class="form-group">
+      <label for="nombre">Nombre del evento</label>
+      <input
+        id="nombre"
+        type="text"
+        formControlName="nombre"
+        name="nombre"
+        placeholder="Ej. Danza, Música..."
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="areaInteres">Área de interés</label>
+      <select
+        id="areaInteres"
+        formControlName="areaInteres"
+        name="areaInteres"
+      >
+        <option value="">Todas</option>
+        <option *ngFor="let area of areas()" [value]="area.name">{{ area.name }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Categoría</label>
+      <select
+        id="category"
+        formControlName="category"
+        name="category"
+      >
+        <option value="">Todas</option>
+        <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">Buscar</button>
+    </div>
+  </form>
+</div>

@@ -1,5 +1,7 @@
 import Eventt from "../models/Eventt.js";
 import Usuario from "../models/Usuario.js";
+import AreaInteres from '../models/AreaInteres.js'; 
+
 
 class Respuesta {
     status = '';
@@ -16,11 +18,19 @@ const crearEvento = async (req, res) => {
         console.log(req.body);
 
         // Validar fecha
-        const fechaEvento = new Date(date);
-        if (isNaN(fechaEvento.getTime()) || fechaEvento <= new Date()) {
-            respuesta.status = 'error';
-            respuesta.msg = 'La fecha del evento debe estar en el futuro.';
-            return res.status(400).json(respuesta);
+        // Validación 2: la fecha nueva no puede estar en el pasado
+        if (date) {
+            const nuevaFecha = new Date(date);
+            nuevaFecha.setHours(0, 0, 0, 0);
+
+            const hoyTimestamp = new Date();
+            hoyTimestamp.setHours(0, 0, 0, 0);
+
+            if (isNaN(nuevaFecha.getTime()) || nuevaFecha.getTime() < hoyTimestamp.getTime()) {
+                respuesta.status = 'error';
+                respuesta.msg = 'La fecha del evento debe estar en el futuro.';
+                return res.status(400).json(respuesta);
+            }
         }
 
         const nombreEvento = req.body.eventName?.trim().toLowerCase();
@@ -54,7 +64,6 @@ const crearEvento = async (req, res) => {
         res.status(400).json(respuesta);
     }
 };
-
 
 // Obtener todos los eventos
 const listarEventos = async (req, res) => {
@@ -113,6 +122,7 @@ const obtenerEvento = async (req, res) => {
 const editarEvento = async (req, res) => {
     let respuesta = new Respuesta();
     console.log(req.usuario);
+    console.log(req.body);
     try {
         const { id } = req.params;
         const nuevosDatos = req.body;
@@ -125,7 +135,7 @@ const editarEvento = async (req, res) => {
             return res.status(404).json(respuesta);
         }
 
-        if(evento.createdBy.toString() !== req.usuario._id.toString()){
+        if (evento.createdBy.toString() !== req.usuario._id.toString()) {
             respuesta.status = 'error';
             respuesta.msg = 'No puedes modificar eventos de otro usuario';
             return res.status(403).json(respuesta);
@@ -141,15 +151,29 @@ const editarEvento = async (req, res) => {
         // Validación 2: la fecha nueva no puede estar en el pasado
         if (nuevosDatos.date) {
             const nuevaFecha = new Date(nuevosDatos.date);
-            if (isNaN(nuevaFecha.getTime()) || nuevaFecha <= new Date()) {
+            nuevaFecha.setHours(0, 0, 0, 0);
+
+            const hoyTimestamp = new Date();
+            hoyTimestamp.setHours(0, 0, 0, 0);
+
+            if (isNaN(nuevaFecha.getTime()) || nuevaFecha.getTime() < hoyTimestamp.getTime()) {
                 respuesta.status = 'error';
                 respuesta.msg = 'La fecha del evento debe estar en el futuro.';
                 return res.status(400).json(respuesta);
             }
         }
 
+
+
         // Actualización parcial
-        Object.assign(evento, nuevosDatos);
+        evento.eventName = nuevosDatos.eventName ? nuevosDatos.eventName : evento.eventName;
+        evento.date = nuevosDatos.date ? nuevosDatos.date : evento.date;
+        evento.city = nuevosDatos.city ? nuevosDatos.city : evento.city;
+        evento.areaInteres = nuevosDatos.areaInteres ? nuevosDatos.areaInteres : evento.areaInteres;
+        evento.category = nuevosDatos.category ? nuevosDatos.category : evento.category;
+        evento.maxCapacity = nuevosDatos.maxCapacity ? nuevosDatos.maxCapacity : evento.maxCapacity;
+        evento.image = req.file ? req.file.filename : evento.image;
+
         await evento.save();
 
         respuesta.status = 'success';
@@ -164,8 +188,6 @@ const editarEvento = async (req, res) => {
         res.status(500).json(respuesta);
     }
 };
-
-
 
 // Eliminar evento
 const eliminarEvento = async (req, res) => {
@@ -201,7 +223,7 @@ const agregarParticipante = async (req, res) => {
         const { idEvento } = req.params;
         const { idUsuario } = req.body;
 
-        console.log(idUsuario,idEvento);
+        console.log(idUsuario, idEvento);
         const evento = await Eventt.findById(idEvento);
 
         if (!evento) {
@@ -286,6 +308,109 @@ const anularReserva = async (req, res) => {
     }
 };
 
+// Cambiar el estado de publicación del evento
+const cambiarEstadoPublicado = async (req, res) => {
+    let respuesta = new Respuesta();
+
+    try {
+        const { id } = req.params;
+        const evento = await Eventt.findById(id)
+            .populate('city')
+            .populate('areaInteres')
+            .populate('participants', '-pass -token');;
+
+        if (!evento) {
+            respuesta.status = 'error';
+            respuesta.msg = 'Evento no encontrado';
+            return res.status(404).json(respuesta);
+        }
+
+        // Verifica que el usuario que solicita sea el creador
+        if (evento.createdBy.toString() !== req.usuario._id.toString()) {
+            respuesta.status = 'error';
+            respuesta.msg = 'No puedes modificar eventos de otro usuario';
+            return res.status(403).json(respuesta);
+        }
+
+        // Cambiar published a lo contrario de lo que estaba
+        evento.published = !evento.published;
+        await evento.save();
+
+        respuesta.status = 'success';
+        respuesta.msg = `Evento ${evento.published ? 'publicado' : 'oculto'} correctamente`;
+        respuesta.data = evento;
+        res.json(respuesta);
+
+    } catch (error) {
+        console.log(error);
+        respuesta.status = 'error';
+        respuesta.msg = 'Error al cambiar el estado de publicación';
+        res.status(500).json(respuesta);
+    }
+};
+
+//filtro
+const buscarEventos = async (req, res) => {
+  const { nombre, areaInteres, category } = req.query;
+  let respuesta = {
+    status: '',
+    msg: '',
+    data: null
+  };
+
+  try {
+    const filtros = {};
+
+    // Filtro por nombre del evento (insensible a tildes y mayúsculas)
+    if (nombre) {
+      const nombreNormalizado = nombre.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      filtros.eventName = {
+        $regex: new RegExp(nombreNormalizado, 'i')
+      };
+    }
+
+    // Filtro por categoría exacta
+    if (category) {
+      filtros.category = category;
+    }
+
+    // Si se proporciona un nombre de área, buscar el _id de esa área
+    if (areaInteres) {
+      const area = await AreaInteres.findOne({
+        name: {
+          $regex: new RegExp(areaInteres, 'i') // ignora mayúsculas y tildes
+        }
+      });
+
+      if (area) {
+        filtros.areaInteres = area._id;
+      } else {
+        // Si no se encuentra el área, retornar vacío
+        respuesta.status = 'success';
+        respuesta.msg = 'No se encontró el área de interés especificada';
+        respuesta.data = [];
+        return res.json(respuesta);
+      }
+    }
+
+    const eventos = await Eventt.find(filtros)
+      .populate('city')
+      .populate('areaInteres')
+      .populate('participants', '-pass -token');
+
+    respuesta.status = 'success';
+    respuesta.msg = 'Eventos encontrados';
+    respuesta.data = eventos;
+    res.json(respuesta);
+
+  } catch (error) {
+    console.error(error);
+    respuesta.status = 'error';
+    respuesta.msg = 'Error al buscar eventos';
+    res.status(500).json(respuesta);
+  }
+};
+
 
 export {
     crearEvento,
@@ -294,5 +419,7 @@ export {
     editarEvento,
     eliminarEvento,
     agregarParticipante,
-    anularReserva
+    anularReserva,
+    cambiarEstadoPublicado,
+    buscarEventos
 };

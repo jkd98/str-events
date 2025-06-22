@@ -16,12 +16,12 @@ const eventtSchema = new mongoose.Schema(
     date: {
       type: Date,
       required: [true, "Event date is required."],
-      validate: {
+      /* validate: {
         validator: function (value) {
           return value > new Date();
         },
         message: "Event date must be in the future.",
-      },
+      }, */
     },
     city: {
       type: mongoose.Schema.Types.ObjectId,

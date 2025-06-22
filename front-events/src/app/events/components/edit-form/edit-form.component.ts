@@ -1,40 +1,31 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { EventService } from '../../services/event.service';
+import { EventFormComponent } from '../event-form/event-form.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Evento, EventService } from '../../services/event.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { CityService } from '../../../cities/services/cities.service';
 import { AreaService } from '../../../areas/services/area.service';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-event-form',
-  standalone: true,
+  selector: 'app-edit-form',
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './event-form.component.html',
-  styleUrls: ['../../../users/components/login/login.component.css', './event-form.component.css']
-
-
+  templateUrl: './edit-form.component.html',
+  styleUrls: ['./edit-form.component.css', '../../../users/components/login/login.component.css']
 })
-export class EventFormComponent implements OnInit {
-  ngOnInit(): void {
-    // Suscribirse a cambios en el área de interés
-    this.myForm.get('areaInteres')?.valueChanges.subscribe(areaId => {
-      const selectedArea: any = this.areas().find(area => area._id === areaId);
-      this.categories = selectedArea!.categorias;
-      console.log(selectedArea)
-      // Reiniciar categoría seleccionada al cambiar de área
-      this.myForm.get('category')?.setValue('');
-    });
-  }
+export class EditFormComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private eventsService = inject(EventService);
   private fb = inject(FormBuilder);
-  private eventService = inject(EventService);
+  private router = inject(Router);
+  public eventSelected?: Partial<Evento>;
+
   private citiesService = inject(CityService);
   private areaService = inject(AreaService);
-  private router = inject(Router);
   cities = computed(this.citiesService.ciudades)
   areas = computed(this.areaService.areas);
   categories = [];
-
+  idEvent = '';
   myForm: FormGroup = this.fb.group({
     eventName: ['', [Validators.required, Validators.minLength(3)]],
     date: ['', Validators.required],
@@ -44,6 +35,34 @@ export class EventFormComponent implements OnInit {
     maxCapacity: [1, [Validators.required, Validators.min(1)]],
     image: [null],  // Aquí guarda la imagen
   });
+
+  ngOnInit(): void {
+    // Suscribirse a cambios en el área de interés
+    this.myForm.get('areaInteres')?.valueChanges.subscribe(areaId => {
+      const selectedArea: any = this.areas().find(area => area._id === areaId);
+      this.categories = selectedArea!.categorias;
+      console.log(selectedArea)
+      // Reiniciar categoría seleccionada al cambiar de área
+      this.myForm.get('category')?.setValue('');
+    });
+    this.idEvent = this.route.snapshot.paramMap.get('id') || '';
+    console.log(this.idEvent);
+    this.eventsService.obtenerEventoPorId(this.idEvent).subscribe((resp) => {
+      console.log(resp);
+      this.eventSelected = resp.data;
+      console.log(this.eventSelected);
+      
+      this.myForm.patchValue({
+        eventName: this.eventSelected.eventName,
+        date: this.eventSelected.date!.substring(0,10),
+        city: this.eventSelected.city._id,
+        areaInteres: this.eventSelected.areaInteres._id,
+        category: this.eventSelected.category,
+        maxCapacity: this.eventSelected.maxCapacity,
+      })
+    })
+
+  }
 
   selectedFile?: File;
 
@@ -77,19 +96,19 @@ export class EventFormComponent implements OnInit {
     if (this.selectedFile) {
       formData.append('image', this.selectedFile, this.selectedFile.name);
     }
-
     console.log('FormData preparado para enviar:', formData);
-    this.eventService.crearEvento(formData).subscribe(res => {
-      const { data } = res;
-      console.log(res);
-      if (res.status === 'success') {
+
+    // Aquí deberías llamar a tu servicio Angular para enviar formData al backend
+    // Ejemplo:
+    this.eventsService.editarEvento(this.idEvent,formData).subscribe((resp)=>{
+      console.log(resp);
+      if(resp.status==='success'){
         // Reiniciamos formulario y archivo
         this.myForm.reset({ maxCapacity: 1 });
         this.selectedFile = undefined;
         this.router.navigate(['/events/all-events'])
       }
     });
-
 
 
   }

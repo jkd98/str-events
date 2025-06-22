@@ -29,7 +29,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   });
 
   private activityEvents$: Subscription | undefined;
-  private timeoutMs = 1 * 60 * 1000; // 15 minutos
+  private timeoutMs = 15 * 60 * 1000; // 15 minutos
   showTimeoutDialog = signal(false); // para mostrar u ocultar el modal
 
   private sessionEffect = effect(() => {

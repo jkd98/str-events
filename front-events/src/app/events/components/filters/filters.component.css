@@ -1,0 +1,80 @@
+.filtros-container {
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--color-fondo-dgr);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.filtros-container h2 {
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  color: var(--color-blanco);
+  text-align: center;
+}
+
+.filtros-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: var(--color-blanco);
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.6rem;
+  background-color: var(--color-fondo);
+}
+
+.form-group input:focus-visible,
+.form-group select:focus-visible {
+  outline: none;
+  border: 1px solid var(--color-btns);
+}
+
+.form-actions {
+  text-align: right;
+}
+
+.form-actions button {
+  background-color: var(--color-btns);
+  color: var(--color-fondo);
+  padding: 0.6rem 1.2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.form-actions button:hover {
+  background-color: var(--color-fondo);
+  color: var(--color-blanco);
+}
+
+/* Responsive: 3 columnas en desktop */
+@media (min-width: 768px) {
+  .filtros-form {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: end;
+  }
+
+  .form-actions {
+    grid-column: span 3;
+    text-align: right;
+  }
+}

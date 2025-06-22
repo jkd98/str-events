@@ -3,6 +3,7 @@ import { EventsHomePageComponent } from './pages/events-home-page/events-home-pa
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { guardiaCrearGuard } from './guards/guardia-crear.guard';
 import { AdminEventsPageComponent } from './pages/admin-events-page/admin-events-page.component';
+import { EditFormComponent } from './components/edit-form/edit-form.component';
 
 export const eventRoutes: Routes = [
     {
@@ -36,6 +37,16 @@ export const eventRoutes: Routes = [
                     breadcrumb: 'Todos los eventos',
                     icon: 'all-events',
                     description: 'Página para ver todos los eventos ',
+                    excludeFromSitemap: true
+                }
+            },
+            {
+                path: 'edit/:id',
+                component: EditFormComponent,
+                data: {
+                    breadcrumb: 'Editar Evento',
+                    icon: 'all-events',
+                    description: 'Página para editar un evento ',
                     excludeFromSitemap: true
                 }
             },

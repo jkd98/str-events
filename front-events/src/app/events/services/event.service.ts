@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 export interface Evento {
   _id?: string;
@@ -15,7 +16,7 @@ export interface Evento {
   image?: string;
   reservated?: boolean;
   published?: boolean;
-  category?:string;
+  category?: string;
 }
 
 interface ApiResponse<T> {
@@ -29,7 +30,7 @@ interface ApiResponse<T> {
 })
 export class EventService {
   private http = inject(HttpClient);
-
+  private router = inject(Router);
   // Señales para manejar estado
   public eventos = signal<Evento[]>([]);
   public eventoSeleccionado = signal<Evento | null>(null);
@@ -80,7 +81,7 @@ export class EventService {
 
   obtenerEventoPorId(id: string) {
     this.error.set(null);
-    this.http.get<ApiResponse<Evento>>(`${environment.apiUrl}/events/${id}`)
+    return this.http.get<ApiResponse<Evento>>(`${environment.apiUrl}/events/${id}`)
       .pipe(
         tap({
           next: (resp) => {
@@ -94,8 +95,7 @@ export class EventService {
             this.error.set(err['error'].msg);
           }
         })
-      )
-      .subscribe();
+      );
   }
 
   crearEvento(formData: FormData) {
@@ -119,7 +119,7 @@ export class EventService {
     );
   }
 
-  editarEvento(id: string, datos: Partial<Evento>) {
+  editarEvento(id: string, datos: FormData) {
     this.error.set(null);
     return this.http.put<ApiResponse<Evento>>(`${environment.apiUrl}/events/${id}`, datos, {
       withCredentials: true
@@ -154,6 +154,30 @@ export class EventService {
             if (this.eventoSeleccionado()?._id === id) {
               this.eventoSeleccionado.set(null);
             }
+          } else {
+            this.error.set(resp.msg);
+          }
+        },
+        error: (err) => {
+          this.error.set(err['error'].msg);
+        }
+      })
+    );
+  }
+
+  cambiarEstadoPublicado(id: string) {
+    this.error.set(null);
+    return this.http.patch<ApiResponse<Evento>>(`${environment.apiUrl}/events/${id}/publicar`, {}, {
+      withCredentials: true
+    }).pipe(
+      tap({
+        next: (resp) => {
+          if (resp.status === 'success') {
+            console.log(resp.data);
+            this.eventos.update(list => list.map(ev => ev._id === id ? resp.data : ev));
+            /* if (this.eventoSeleccionado()?._id === id) {
+              this.eventoSeleccionado.set(resp.data);
+            } */
           } else {
             this.error.set(resp.msg);
           }
@@ -204,5 +228,49 @@ export class EventService {
       })
     );
 
+  }
+
+  buscar(filtros: {
+    nombre?: string,
+    areaInteres?: string,
+    category?: string
+  }) {
+    this.cargandoEventos.set(true);
+    this.error.set(null);
+    let params = new HttpParams();
+
+    if (filtros.nombre) {
+      params = params.set('nombre', filtros.nombre);
+    }
+
+    if (filtros.areaInteres) {
+      params = params.set('areaInteres', filtros.areaInteres);
+    }
+
+    if (filtros.category) {
+      params = params.set('category', filtros.category);
+    }
+
+
+    return this.http.get<ApiResponse<Evento[]>>(`${environment.apiUrl}/events/buscar`,{params})
+      .pipe(
+        tap({
+          next: (resp) => {
+            if (resp.status === 'success') {
+              this.eventos.set(resp.data);
+              this.router.navigate(['/events/all-events']);
+              console.log(this.eventos());
+            } else {
+              this.error.set(resp.msg);
+            }
+            this.cargandoEventos.set(false);
+          },
+          error: (err) => {
+            this.error.set(err['error'].msg);
+            this.cargandoEventos.set(false);
+          }
+        })
+      )
+      .subscribe();
   }
 }
