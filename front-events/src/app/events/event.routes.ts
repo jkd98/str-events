@@ -4,6 +4,10 @@ import { EventFormComponent } from './components/event-form/event-form.component
 import { guardiaCrearGuard } from './guards/guardia-crear.guard';
 import { AdminEventsPageComponent } from './pages/admin-events-page/admin-events-page.component';
 import { EditFormComponent } from './components/edit-form/edit-form.component';
+import { CategoryConcertsComponent } from './pages/category-concerts/category-concerts.component';
+import { CategorySportsComponent } from './pages/category-sports/category-sports.component';
+import { CategoryInfoComponent } from './pages/category-info/category-info.component';
+import { CategoryCulturalComponent } from './pages/category-cultural/category-cultural.component';
 
 export const eventRoutes: Routes = [
     {
@@ -28,13 +32,53 @@ export const eventRoutes: Routes = [
                     description: 'Página para publicar un nuevo evento',
                     excludeFromSitemap: true
                 },
-                canActivate:[guardiaCrearGuard]
+                canActivate: [guardiaCrearGuard]
             },
             {
                 path: 'all-events',
                 component: AdminEventsPageComponent,
                 data: {
                     breadcrumb: 'Todos los eventos',
+                    icon: 'all-events',
+                    description: 'Página para ver todos los eventos ',
+                    excludeFromSitemap: true
+                }
+            },
+            {
+                path: 'category/Conciertos',
+                component: CategoryConcertsComponent,
+                data: {
+                    breadcrumb: 'Todos los conciertos',
+                    icon: 'all-events',
+                    description: 'Página para ver todos los eventos ',
+                    excludeFromSitemap: true
+                }
+            },
+            {
+                path: 'category/Deportes',
+                component: CategorySportsComponent,
+                data: {
+                    breadcrumb: 'Todos los eventos deportivos',
+                    icon: 'all-events',
+                    description: 'Página para ver todos los eventos ',
+                    excludeFromSitemap: true
+                }
+            },
+            {
+                path: 'category/Informativos',
+                component: CategoryInfoComponent,
+                data: {
+                    breadcrumb: 'Todos los eventos informativos',
+                    icon: 'all-events',
+                    description: 'Página para ver todos los eventos ',
+                    excludeFromSitemap: true
+                }
+            },
+            {
+                path: 'category/Culturales',
+                component: CategoryCulturalComponent,
+                data: {
+                    breadcrumb: 'Todos los eventos culturales',
                     icon: 'all-events',
                     description: 'Página para ver todos los eventos ',
                     excludeFromSitemap: true

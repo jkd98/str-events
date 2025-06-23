@@ -42,7 +42,7 @@ export class FiltersComponent implements OnInit {
       category: this.filtros.controls['category'].value || '',
     }
 
-    this.eventService.buscar(filtro);
+    this.eventService.buscar(filtro).subscribe();
   }
 
 }

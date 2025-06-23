@@ -10,7 +10,7 @@
     <div class="card">
         <p-carousel [value]="areas()" [numVisible]="1" [numScroll]="1" >
             <ng-template let-area #item>
-                <div class="area-card">
+                <div class="area-card" (click)="redirect(area.name)">
                     <div class="area-card__img">
                         <img class="img" src="{{baseURL+'/public/uploads/'+area.img}}" alt="">
                     </div>

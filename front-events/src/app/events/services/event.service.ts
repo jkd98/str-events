@@ -258,7 +258,7 @@ export class EventService {
           next: (resp) => {
             if (resp.status === 'success') {
               this.eventos.set(resp.data);
-              this.router.navigate(['/events/all-events']);
+              //this.router.navigate(['/events/all-events']);
               console.log(this.eventos());
             } else {
               this.error.set(resp.msg);
@@ -271,6 +271,6 @@ export class EventService {
           }
         })
       )
-      .subscribe();
+      ;
   }
 }

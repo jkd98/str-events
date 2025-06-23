@@ -16,10 +16,11 @@ export class PopularEventsComponent implements OnInit {
   private router = inject(Router);
   public baseURL = environment.apiUrl;
   public events = computed(() => {
+    const regex1 = /^http/;
     let evts = this.eventService.eventos().map(ev => {
       ev.reservated = this.isUserParticipant(ev);
       console.log(ev);
-      if(ev.image!=null){
+      if(ev.image != null && !regex1.test(ev.image||'')){
         ev.image = this.baseURL+'/public/uploads/'+ev.image;
       }
       return ev;

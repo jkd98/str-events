@@ -5,6 +5,8 @@ import { ButtonModule } from 'primeng/button';
 import { Tag } from 'primeng/tag';
 import { Area, AreaService } from '../../../areas/services/area.service';
 import { environment } from '../../../../environments/environment';
+import { Router } from '@angular/router';
+import { EventService } from '../../services/event.service';
 
 @Component({
   selector: 'app-areas-interes',
@@ -13,11 +15,16 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './areas-interes.component.css'
 })
 export class AreasInteresComponent implements OnInit {
+
   areasCarrousel = [];
   responsiveOptions: any[] | undefined;
   private areaService = inject(AreaService);
   public areas: Signal<Area[]> = this.areaService.areas;
   public baseURL = environment.apiUrl;
+
+  private router = inject(Router);
+  private eventService = inject(EventService);
+
   ngOnInit() {
     this.responsiveOptions = [
       {
@@ -41,6 +48,9 @@ export class AreasInteresComponent implements OnInit {
         numScroll: 1,
       },
     ];
+  }
+  redirect(area: string) {
+      this.router.navigate(['/events/category/',area]);
   }
 
 

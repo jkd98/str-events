@@ -7,9 +7,9 @@
     <div class="links">
         <a [routerLink]="['/events/all-events']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
             class="links__link">Ver Eventos</a>
-        <a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        <a [routerLink]="['/events/category/concerts']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
             class="links__link">Conciertos</a>
-        <a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        <a [routerLink]="['/events/category/sports']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
             class="links__link">Deportes</a>
         @if( user().role === ROLE ){
         <a [routerLink]="['/events/create']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
