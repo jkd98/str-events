@@ -3,7 +3,7 @@
     <h2 class="form-heading">Crear Cuenta</h2>
 
     <!-- Campo Nombre -->
-    <div class="nombre" >
+    <div class="nombre">
       <div class="form-campo">
         <label for="name">Nombre:</label>
         <input id="name" type="text" formControlName="name" />
@@ -57,7 +57,7 @@
       </small>
     </div>
 
-    <div class="personal" >
+    <div class="personal">
       <!-- Campo Dirección -->
       <div class="form-campo">
         <label for="address">Dirección:</label>
@@ -78,10 +78,15 @@
     </div>
 
     <div class="form-campo">
-      <div id="recaptcha-container" ></div>
+      <div id="recaptcha-container"></div>
     </div>
 
     <button type="submit" [disabled]="registroForm.invalid">Registrarse</button>
+
+    <div class="form-campo">
+      <p>Al registrarte,estas aceptando nuestras <a href="https://www.freeprivacypolicy.com/live/8ec6e617-4884-4325-8797-a3b1befd3f22" target="_blank">Politicas de privacidad</a></p>
+      
+    </div>
   </form>
 </div>
 
