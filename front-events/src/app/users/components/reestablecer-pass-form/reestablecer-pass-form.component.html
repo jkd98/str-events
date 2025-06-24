@@ -1,0 +1,49 @@
+<div class="capa">
+  <form [formGroup]="recuperarForm" (ngSubmit)="onSubmit()" class="login-form">
+    <h2 class="form-heading">Reestablece tu contraseña</h2>
+    <br>
+    <!-- Campo Contraseña -->
+    <div class="form-campo">
+      <label for="pass">Contraseña:</label>
+      <input id="pass" type="password" formControlName="pass" />
+      <div *ngIf="recuperarForm.controls['pass'].touched && recuperarForm.controls['pass'].invalid" class="error">
+        <small *ngIf="recuperarForm.controls['pass'].errors?.['required']">La contraseña es obligatoria.</small>
+        <small *ngIf="recuperarForm.controls['pass'].errors?.['minlength']">Mínimo 6 caracteres.</small>
+      </div>
+    </div>
+
+    <!-- Campo Repetir Contraseña -->
+    <div class="form-campo">
+      <label for="rpass">Repetir Contraseña:</label>
+      <input id="rpass" type="password" formControlName="rpass" />
+      <div *ngIf="recuperarForm.controls['rpass'].touched && recuperarForm.controls['rpass'].invalid" class="error">
+        <small *ngIf="recuperarForm.controls['rpass'].errors?.['required']">Debe repetir la contraseña.</small>
+      </div>
+      <small *ngIf="recuperarForm.hasError('passwordsNotMatch') && recuperarForm.controls['rpass'].touched" class="error">
+        Las contraseñas no coinciden
+      </small>
+    </div>
+
+
+
+    <div class="form-campo">
+      <button type="submit" [disabled]="recuperarForm.invalid">Reestablecer</button>
+    </div>
+
+
+    <div *ngIf="usuarioService.error()" class="error">
+      {{ usuarioService.error() }}
+    </div>
+  </form>
+</div>
+
+@if (showTimeoutDialog()) {
+<div class="dialog-overlay">
+  <div class="dialog-box">
+    <h2>{{msg}}</h2>
+    <div class="dialog-actions">
+      <button (click)="onClose()">{{error?'Ok':'Iniciar Sesión'}}</button>
+    </div>
+  </div>
+</div>
+}

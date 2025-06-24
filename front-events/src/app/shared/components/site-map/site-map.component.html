@@ -1,0 +1,14 @@
+<div class="capa">
+    <h2 class="heading">Mapa del sitio</h2>
+    <div class="mapa__list">
+        @for(item of routes; track $index){
+            <p 
+                class="mapa__list-item" 
+                [class]="{'mapa__list-item--spc': item.id === 'inicio' || item.id === 'registro' || item.id === 'iniciar sesion' }" 
+                (click)="navigate(item.route)"
+                >
+                <i class="{{item.icon}}"></i><span>{{item.title}}</span>
+            </p>
+        }
+    </div>
+</div>

@@ -21,6 +21,13 @@
 
 .footer-item {
     margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-item a {
+    text-decoration: none;
+    color: var(--color-blanco);
 }
 
 .footer-item:last-of-type {

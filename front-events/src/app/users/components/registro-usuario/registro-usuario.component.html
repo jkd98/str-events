@@ -84,8 +84,10 @@
     <button type="submit" [disabled]="registroForm.invalid">Registrarse</button>
 
     <div class="form-campo">
-      <p>Al registrarte,estas aceptando nuestras <a href="https://www.freeprivacypolicy.com/live/8ec6e617-4884-4325-8797-a3b1befd3f22" target="_blank">Politicas de privacidad</a></p>
-      
+      <p>Al registrarte,estas aceptando nuestras <a
+          href="https://www.freeprivacypolicy.com/live/8ec6e617-4884-4325-8797-a3b1befd3f22" target="_blank">Politicas
+          de privacidad</a></p>
+
     </div>
   </form>
 </div>
@@ -94,3 +96,15 @@
 <!-- <pre>{{ registroForm.value | json }}</pre>
 <pre>Valid: {{ registroForm.valid }}</pre>
 <pre>Touched: {{ registroForm.touched }}</pre> -->
+
+@if (showTimeoutDialog()) {
+<div class="dialog-overlay">
+  <div class="dialog-box">
+    <h2>Cuenta creada exitosamente. </h2>
+    <p>Para poder iniciar sesión, accede a tu correo electronico y confirma tu cuenta</p>
+    <div class="dialog-actions">
+      <button (click)="onClose()">Inicio</button>
+    </div>
+  </div>
+</div>
+}

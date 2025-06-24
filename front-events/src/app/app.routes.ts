@@ -10,6 +10,10 @@ export const routes: Routes = [
         loadChildren:() => import('./users/user.routes').then(m=>m.userRoutes)
     },
     {
+        path:'shared',
+        loadChildren:() => import('./shared/shared.routes').then(m=>m.sharedRoutes)
+    },
+    {
         path:'**',
         redirectTo:'events'
     }

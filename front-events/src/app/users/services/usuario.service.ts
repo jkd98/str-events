@@ -223,4 +223,84 @@ export class UsuarioService {
     return this.http.post<any>(`${environment.apiUrl}/users/logout`, {}, { withCredentials: true });
   }
 
+  recuperarPass(email: string) {
+    this.error.set(null);
+
+    return this.http.post<ApiResponse<Usuario>>(
+      `${environment.apiUrl}/users/olvide-password`,
+      { email },
+      {
+        withCredentials: true // necesario para que la cookie se guarde
+      }
+    ).pipe(
+      tap({
+        next: (res) => {
+          if (res.status === 'success') {
+            /* this.usuarioSeleccionado.set(res.data);
+            window.sessionStorage.setItem('usr', JSON.stringify( this.usuarioSeleccionado() ) );
+            this.user.set(window.sessionStorage.getItem('usr'));
+            console.log(this.user());
+            this.router.navigate(['/events/home']) */
+            //this.fase.set('codigo');
+            //this.router.navigate(['']);
+            console.log('success');
+
+          } else {
+            this.error.set(res.msg);
+          }
+        },
+        error: (err) => {
+          console.log(err);
+          this.error.set(err['error'].msg);
+        }
+      })
+    );
+  }
+
+  comporbarTKN(tkn: string) {
+    this.error.set(null);
+
+    return this.http.get<ApiResponse<Usuario>>(
+      `${environment.apiUrl}/users/olvide-password/${tkn}`,
+      {
+        withCredentials: true // necesario para que la cookie se guarde
+      }
+    )
+  }
+
+  reestablecerPass(tkn:string,pass: string,rpass:string) {
+    this.error.set(null);
+
+    return this.http.post<ApiResponse<Usuario>>(
+      `${environment.apiUrl}/users/olvide-password/${tkn}`,
+      { pass,rpass },
+      {
+        withCredentials: true // necesario para que la cookie se guarde
+      }
+    )
+  }
+
+    confirmAccount(tkn: string) {
+    this.error.set(null);
+
+    return this.http.get<ApiResponse<Usuario>>(
+      `${environment.apiUrl}/users/confirmar/${tkn}`,
+      {
+        withCredentials: true // necesario para que la cookie se guarde
+      }
+    )
+  }
+
+  suscrip(email:string) {
+    this.error.set(null);
+
+    return this.http.post<ApiResponse<Usuario>>(
+      `${environment.apiUrl}/events/suscrip`,
+      { email },
+      {
+        withCredentials: true // necesario para que la cookie se guarde
+      }
+    )
+  }
+
 }

@@ -1,0 +1,35 @@
+<div class="capa">
+  <form [formGroup]="recuperarForm" (ngSubmit)="onSubmit()" class="login-form">
+    <h2 class="form-heading">¿Olvidaste tu contraseña?</h2>
+    <p>Ingresa tu correo y te enviaremos las instrucciones</p>
+    <br>
+    <div class="form-campo">
+      <label for="email">Email</label>
+      <input type="email" id="email" formControlName="email" placeholder="usuario@correo.com" />
+      <div *ngIf="recuperarForm.get('email')?.invalid && recuperarForm.get('email')?.touched" class="error">
+        Email es obligatorio y debe tener formato válido.
+      </div>
+    </div>
+
+
+    <div class="form-campo">
+      <button type="submit" [disabled]="recuperarForm.invalid">Enviar Instrucciones</button>
+    </div>
+
+   
+    <div *ngIf="usuarioService.error()" class="error">
+      {{ usuarioService.error() }}
+    </div>
+  </form>
+</div>
+
+@if (showTimeoutDialog()) {
+<div class="dialog-overlay">
+    <div class="dialog-box">
+        <h2>Se han enviado las instrucciones a tu correo electrónico</h2>
+        <div class="dialog-actions">
+            <button (click)="onClose()">Inicio</button>
+        </div>
+    </div>
+</div>
+}

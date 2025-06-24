@@ -16,6 +16,10 @@ export class HeaderComponent {
 
   buscar(term: string) {
     //console.log(term);
+    if(term===''||term===null){
+      this.results = [];
+      return;
+    }
     const regexp1 = /term/;
     const res = this.paths.filter(p => p.title.toLowerCase().includes(term) || p.id.toLowerCase().includes(term));
     console.log(res);

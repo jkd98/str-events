@@ -1,24 +1,3 @@
-.nombre,
-.personal {
-    width: 100%;
-}
-
-@media (min-width:768px) {
-
-    .nombre,
-    .personal {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        column-gap: 1rem;
-        
-    }
-
-    .login-form {
-        padding-inline: 26%;
-    }
-}
-
-
 /*dialog*/
 .dialog-overlay {
   position: fixed;
@@ -59,14 +38,9 @@
 
 
 
-.dialog-actions button{
+.dialog-actions button {
   background-color: #4caf50;
   color: white;
-  padding: 1.2rem 2.2rem;
-  font-size: 1.7rem;
-
-}
-
-.error {
-  background-color: #f44336;
+  padding: 1rem 2rem;
+  font-size: medium;
 }

@@ -8,7 +8,8 @@ import {
     agregarParticipante,
     anularReserva,
     cambiarEstadoPublicado,
-    buscarEventos
+    buscarEventos,
+    suscripcion
 } from "../controllers/eventtController.js";
 import guardia from '../middleware/guardiaRuta.js'; 
 import checkRole from "../middleware/checkRole.js";
@@ -34,5 +35,8 @@ router.post('/:idEvento/participantes', agregarParticipante);
 
 // Anular reservación de un evento
 router.delete('/:idEvento/participantes', anularReserva);
+
+//Para sub
+router.post('/suscrip', suscripcion);
 
 export default router;

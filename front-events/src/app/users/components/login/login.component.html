@@ -28,7 +28,7 @@
     </div>
 
     <div class="form-campo">
-      <a [routerLink]="['/users/signup']" class="label-forgotp">¿Olvidaste tu contraseña?</a>
+      <a [routerLink]="['/users/recover-pass']" class="label-forgotp">¿Olvidaste tu contraseña?</a>
     </div>
 
     <div *ngIf="usuarioService.error()" class="error">
@@ -54,3 +54,4 @@
   </form>
 </div>
 }
+

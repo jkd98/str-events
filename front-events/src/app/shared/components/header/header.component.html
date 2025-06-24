@@ -15,14 +15,14 @@
                     (keyup.enter)="buscar(search.value)">
                 <button (click)="buscar(search.value)"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
-            <div class="resultados">
-                @for (result of results; track $index) {
+        </div>
+        <div class="resultados">
+            @for (result of results; track $index) {
 
-                <p (click)="navegar(result.route)">
-                    {{ result.title }} - ({{ result.description }})
-                </p>
-                }
-            </div>
+            <p (click)="navegar(result.route)">
+                {{ result.title }} - ({{ result.description }})
+            </p>
+            }
         </div>
     </section>
 </div>

@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
+import { Router } from '@angular/router';
 declare const grecaptcha: any;
 
 @Component({
@@ -36,6 +37,8 @@ export class RegistroUsuarioComponent implements OnInit {
     return pass && rpass && pass.value !== rpass.value ? { passwordsNotMatch: true } : null;
   };
 
+  showTimeoutDialog = signal(false); // para mostrar u ocultar el modal
+  private router = inject(Router);
 
   captchaToken: string = '';
   captchaValido = false; // bandera para controlar el botón
@@ -73,6 +76,8 @@ export class RegistroUsuarioComponent implements OnInit {
         if (res.status === 'success') {
           console.log('Usuario registrado:', res.data);
           this.registroForm.reset();
+          this.showTimeoutDialog.set(true);
+
         } else {
           alert(res.msg || 'Error en el registro');
         }
@@ -129,5 +134,10 @@ export class RegistroUsuarioComponent implements OnInit {
         this.captchaValido = true;
       }
     });
+  }
+
+  onClose() {
+    this.showTimeoutDialog.set(false);
+    this.router.navigate(['/events/home'])
   }
 }

@@ -1,6 +1,6 @@
 import Eventt from "../models/Eventt.js";
 import Usuario from "../models/Usuario.js";
-import AreaInteres from '../models/AreaInteres.js'; 
+import AreaInteres from '../models/AreaInteres.js';
 
 
 class Respuesta {
@@ -351,65 +351,89 @@ const cambiarEstadoPublicado = async (req, res) => {
 
 //filtro
 const buscarEventos = async (req, res) => {
-  const { nombre, areaInteres, category } = req.query;
-  let respuesta = {
-    status: '',
-    msg: '',
-    data: null
-  };
+    const { nombre, areaInteres, category } = req.query;
+    let respuesta = {
+        status: '',
+        msg: '',
+        data: null
+    };
 
-  try {
-    const filtros = {};
+    try {
+        const filtros = {};
 
-    // Filtro por nombre del evento (insensible a tildes y mayúsculas)
-    if (nombre) {
-      const nombreNormalizado = nombre.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      filtros.eventName = {
-        $regex: new RegExp(nombreNormalizado, 'i')
-      };
-    }
-
-    // Filtro por categoría exacta
-    if (category) {
-      filtros.category = category;
-    }
-
-    // Si se proporciona un nombre de área, buscar el _id de esa área
-    if (areaInteres) {
-      const area = await AreaInteres.findOne({
-        name: {
-          $regex: new RegExp(areaInteres, 'i') // ignora mayúsculas y tildes
+        // Filtro por nombre del evento (insensible a tildes y mayúsculas)
+        if (nombre) {
+            const nombreNormalizado = nombre.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            filtros.eventName = {
+                $regex: new RegExp(nombreNormalizado, 'i')
+            };
         }
-      });
 
-      if (area) {
-        filtros.areaInteres = area._id;
-      } else {
-        // Si no se encuentra el área, retornar vacío
+        // Filtro por categoría exacta
+        if (category) {
+            filtros.category = category;
+        }
+
+        // Si se proporciona un nombre de área, buscar el _id de esa área
+        if (areaInteres) {
+            const area = await AreaInteres.findOne({
+                name: {
+                    $regex: new RegExp(areaInteres, 'i') // ignora mayúsculas y tildes
+                }
+            });
+
+            if (area) {
+                filtros.areaInteres = area._id;
+            } else {
+                // Si no se encuentra el área, retornar vacío
+                respuesta.status = 'success';
+                respuesta.msg = 'No se encontró el área de interés especificada';
+                respuesta.data = [];
+                return res.json(respuesta);
+            }
+        }
+
+        const eventos = await Eventt.find(filtros)
+            .populate('city')
+            .populate('areaInteres')
+            .populate('participants', '-pass -token');
+
         respuesta.status = 'success';
-        respuesta.msg = 'No se encontró el área de interés especificada';
-        respuesta.data = [];
-        return res.json(respuesta);
-      }
+        respuesta.msg = 'Eventos encontrados';
+        respuesta.data = eventos;
+        res.json(respuesta);
+
+    } catch (error) {
+        console.error(error);
+        respuesta.status = 'error';
+        respuesta.msg = 'Error al buscar eventos';
+        res.status(500).json(respuesta);
     }
-
-    const eventos = await Eventt.find(filtros)
-      .populate('city')
-      .populate('areaInteres')
-      .populate('participants', '-pass -token');
-
-    respuesta.status = 'success';
-    respuesta.msg = 'Eventos encontrados';
-    respuesta.data = eventos;
-    res.json(respuesta);
-
-  } catch (error) {
-    console.error(error);
-    respuesta.status = 'error';
-    respuesta.msg = 'Error al buscar eventos';
-    res.status(500).json(respuesta);
-  }
 };
+
+const suscripcion = async (req, res) => {
+    let respuesta = {
+        status: '',
+        msg: '',
+        data: null
+    };
+
+    try {
+        const { email } = req.body;
+        const user = await Usuario.find({email});
+        console.log(user);
+        
+        respuesta.status = 'success';
+        respuesta.msg = 'Suscripcion exitosa';
+        respuesta.data = null;
+        res.status(201).json(respuesta);
+    } catch (error) {
+        console.log(error);
+        respuesta.status = 'error';
+        respuesta.msg = 'Error al crear el evento';
+        res.status(400).json(respuesta);
+    }
+}
 
 
 export {
@@ -421,5 +445,6 @@ export {
     agregarParticipante,
     anularReserva,
     cambiarEstadoPublicado,
-    buscarEventos
+    buscarEventos,
+    suscripcion
 };

@@ -1,0 +1,46 @@
+.capa {
+    padding: 2.5rem;
+}
+
+.heading {
+    width: 100%;
+    text-align: center;
+    padding: 2rem 0;
+    font-size: 3rem;
+}
+
+@media (min-width:768px) {
+    .capa {
+        padding-inline: 5rem;
+    }
+}
+
+.mapa__list{
+    background-color: var(--color-fondo-dgr);
+    padding: 2rem;
+}
+
+.mapa__list-item {
+    background-color: var(--color-fondo);
+    padding: 1.5rem 2.2rem;
+    border-radius: 1.2rem;
+    margin: 1.5rem 0;
+    width: 100%;
+    font-weight: 600;
+    font-size: 1.8rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.mapa__list-item--spc{
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-blanco);
+    color: var(--color-fondo);
+}
+
+.mapa__list-item:hover{
+    background-color: var(--color-btns);
+    color: var(--color-fondo);
+    cursor: pointer;
+}

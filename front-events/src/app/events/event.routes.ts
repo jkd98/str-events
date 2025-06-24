@@ -8,6 +8,7 @@ import { CategoryConcertsComponent } from './pages/category-concerts/category-co
 import { CategorySportsComponent } from './pages/category-sports/category-sports.component';
 import { CategoryInfoComponent } from './pages/category-info/category-info.component';
 import { CategoryCulturalComponent } from './pages/category-cultural/category-cultural.component';
+import { SiteMapComponent } from '../shared/components/site-map/site-map.component';
 
 export const eventRoutes: Routes = [
     {
@@ -92,7 +93,18 @@ export const eventRoutes: Routes = [
                     icon: 'all-events',
                     description: 'Página para editar un evento ',
                     excludeFromSitemap: true
-                }
+                },
+                canActivate: [guardiaCrearGuard]
+            },
+            {
+                path: 'site-map',
+                component: SiteMapComponent,
+                data: {
+                    breadcrumb: 'Mapa del sitio',
+                    icon: 'all-events',
+                    description: 'Página que muestra el mapa del sitio',
+                    excludeFromSitemap: true
+                },
             },
             {
                 path: '**',

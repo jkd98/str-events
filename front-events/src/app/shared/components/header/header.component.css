@@ -71,7 +71,7 @@
 .section__search {
     width: 100%;
     background-color: var(--color-fondo-dgr);
-    padding: 3rem 1.5rem;
+    padding: 1.5rem 1.5rem;
     border-radius: 1rem;
     overflow: hidden;
 }
@@ -126,17 +126,18 @@
 }
 
 .resultados {
-    margin-top: 1rem;
+    max-height: 7rem;
+    overflow-y: scroll;
 }
 
 .resultados  p{
     width: 100%;
-    background-color: var(--color-fondo);
+    background-color: var(--color-fondo-dgr);
     padding: 1rem 2rem;
     border-radius: 1rem;
 }
 
 .resultados  p:hover{
-
-    background-color: var(--color-fondo-dgr);
+    font-weight: 600;
+    background-color: var(--color-btns);
 }   
