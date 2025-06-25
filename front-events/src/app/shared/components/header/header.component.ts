@@ -20,8 +20,9 @@ export class HeaderComponent {
       this.results = [];
       return;
     }
+    const termLower = term.toLowerCase();
     const regexp1 = /term/;
-    const res = this.paths.filter(p => p.title.toLowerCase().includes(term) || p.id.toLowerCase().includes(term));
+    const res = this.paths.filter(p => p.title.toLowerCase().includes(termLower) || p.id.toLowerCase().includes(termLower));
     console.log(res);
     this.results = res;
   }
