@@ -1,7 +1,7 @@
 import Eventt from "../models/Eventt.js";
 import Usuario from "../models/Usuario.js";
 import AreaInteres from '../models/AreaInteres.js';
-
+import Suscripcion from "../models/Suscripcion.js";
 
 class Respuesta {
     status = '';
@@ -420,18 +420,34 @@ const suscripcion = async (req, res) => {
 
     try {
         const { email } = req.body;
-        const user = await Usuario.find({email});
+        const user = await Usuario.findOne({ email });
         console.log(user);
-        
+        if (!user) {
+            respuesta.status = 'error';
+            respuesta.msg = 'No se econtró al usuario';
+            return res.status(400).json(respuesta);
+        }
+
+        const isSuscript = await Suscripcion.findOne({user:user._id}).populate('user');
+        console.log(isSuscript);
+        if (isSuscript) {
+            respuesta.status = 'error';
+            respuesta.msg = 'Esta cuenta ya esta suscrita';
+            return res.status(400).json(respuesta);
+        }
+
+        const susc = new Suscripcion({ user: user._id });
+        await susc.save();
+
         respuesta.status = 'success';
         respuesta.msg = 'Suscripcion exitosa';
-        respuesta.data = null;
-        res.status(201).json(respuesta);
+        respuesta.data = susc;
+        return res.status(201).json(respuesta);
     } catch (error) {
         console.log(error);
         respuesta.status = 'error';
-        respuesta.msg = 'Error al crear el evento';
-        res.status(400).json(respuesta);
+        respuesta.msg = 'Error al suscribirse';
+        return res.status(400).json(respuesta);
     }
 }
 

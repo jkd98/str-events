@@ -57,7 +57,12 @@ const usuarioSchema = mongoose.Schema(
         otpExpires: {
             type: Date,
             default: null
+        },
+        policityAccepted:{
+            type:Boolean,
+            default:true
         }
+
     },
     {
         timestamps: true

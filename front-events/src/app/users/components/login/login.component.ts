@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { UsuarioService } from '../../services/usuario.service';
 import { RouterLink } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 declare const grecaptcha: any;
 @Component({
   selector: 'app-login',
@@ -104,7 +105,7 @@ export class LoginComponent implements OnInit {
 
   private renderCaptcha(): void {
     (window as any).grecaptcha.render('recaptcha-container', {
-      sitekey: '6LcieGYrAAAAAMBHa4bDMRpi_gjHPATTry-WrDmX',
+      sitekey: environment.sitekey,
       callback: () => {
         this.captchaValido = true;
       }

@@ -3,6 +3,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 declare const grecaptcha: any;
 
 @Component({
@@ -88,9 +89,6 @@ export class RegistroUsuarioComponent implements OnInit {
       }
     });
 
-
-
-
   }
 
 
@@ -129,7 +127,7 @@ export class RegistroUsuarioComponent implements OnInit {
 
   private renderCaptcha(): void {
     (window as any).grecaptcha.render('recaptcha-container', {
-      sitekey: '6LcieGYrAAAAAMBHa4bDMRpi_gjHPATTry-WrDmX',
+      sitekey: environment.sitekey,
       callback: () => {
         this.captchaValido = true;
       }

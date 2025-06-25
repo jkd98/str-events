@@ -18,7 +18,7 @@ dotenv.config();
 const app = express();
 
 // Crear la appconst app = express();
-const port = process.env.B_PORT || 3050;
+const port = process.env.PORT || process.env.B_PORT || 3050;
 
 app.use(express.json()); // para que procese informacion json correctamente
 
@@ -36,7 +36,7 @@ conectarDB();
 // Configurar CORS
 // Dominios Permitidos
 const whiteList = [
-    process.env.FRONTEND_URLC
+    process.env.E_FRONT
 ];
 const corsOptions = {
     origin:function(origin,callback){
