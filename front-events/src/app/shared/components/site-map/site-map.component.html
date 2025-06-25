@@ -4,7 +4,7 @@
         @for(item of routes; track $index){
             <p 
                 class="mapa__list-item" 
-                [class]="{'mapa__list-item--spc': item.id === 'inicio' || item.id === 'registro' || item.id === 'iniciar sesion' }" 
+                [class]="{'mapa__list-item--spc': item.id === 'inicio' || item.id === 'registro' || item.id === 'iniciar sesion' || item.id ==='recuperar contraseña' }" 
                 (click)="navigate(item.route)"
                 >
                 <i class="{{item.icon}}"></i><span>{{item.title}}</span>
