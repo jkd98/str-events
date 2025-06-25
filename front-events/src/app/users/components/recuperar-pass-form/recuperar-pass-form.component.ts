@@ -17,7 +17,7 @@ export class RecuperarPassFormComponent {
   private router = inject(Router);
 
   recuperarForm: FormGroup = this.fb.group({
-    email: ['davidlrj9999@gmail.com', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email]],
   });
 
   onSubmit() {

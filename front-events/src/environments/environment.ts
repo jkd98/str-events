@@ -1,4 +1,4 @@
 export const environment = {
-    apiUrl:'http://localhost:4222',
+    apiUrl:'https://str-back.onrender.com',
     sitekey:'6LcieGYrAAAAAMBHa4bDMRpi_gjHPATTry-WrDmX'
 };

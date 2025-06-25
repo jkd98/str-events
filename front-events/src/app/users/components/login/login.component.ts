@@ -31,8 +31,8 @@ export class LoginComponent implements OnInit {
 
 
   loginForm: FormGroup = this.fb.group({
-    email: ['davidlrj9999@gmail.com', [Validators.required, Validators.email]],
-    pass: ['12345678', [Validators.required, Validators.minLength(6)]]
+    email: ['', [Validators.required, Validators.email]],
+    pass: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   codigoForm: FormGroup = this.fb.group({
