@@ -92,8 +92,8 @@ export class EventService {
             }
           },
           error: (err) => {
-            this.error.set(err['error'].msg);
-            this.router.navigate(['/events/all-events'])
+            //this.error.set(err['error'].msg);
+            this.router.navigate(['/shared/not-found'])
           }
         })
       );

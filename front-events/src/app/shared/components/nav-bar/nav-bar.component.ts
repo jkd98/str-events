@@ -29,7 +29,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   });
 
   private activityEvents$: Subscription | undefined;
-  private timeoutMs = 15 * 60 * 1000; // 15 minutos
+  private timeoutMs = 2 * 60 * 1000; // 2 minutos
   showTimeoutDialog = signal(false); // para mostrar u ocultar el modal
 
   private sessionEffect = effect(() => {
@@ -41,11 +41,27 @@ export class NavBarComponent implements OnInit, OnDestroy {
     if (Object.keys(usr).length > 0) {
       console.log('Usuario activo, se habilita detección de inactividad');
 
+      /* const mouseMove$ = fromEvent(document, 'mousemove');
+      const click$ = fromEvent(document, 'click');
+      const keydown$ = fromEvent(document, 'keydown');
+
+      const activity$ = merge(mouseMove$, click$, keydown$); */
+
       const mouseMove$ = fromEvent(document, 'mousemove');
       const click$ = fromEvent(document, 'click');
       const keydown$ = fromEvent(document, 'keydown');
 
-      const activity$ = merge(mouseMove$, click$, keydown$);
+      // Eventos para móvil
+      const touchStart$ = fromEvent(document, 'touchstart');
+      const touchMove$ = fromEvent(document, 'touchmove');
+
+      const activity$ = merge(
+        mouseMove$,
+        click$,
+        keydown$,
+        touchStart$,
+        touchMove$
+      );
 
       this.activityEvents$ = activity$
         .pipe(

@@ -16,4 +16,7 @@ import { BreadcrumbsT1Component } from './shared/components/breadcrumbs-t1/bread
 })
 export class AppComponent {
   title = 'front-events';
+  toUpp(){
+    window.scroll(0,0);
+  }
 }

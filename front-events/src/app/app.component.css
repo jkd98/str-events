@@ -15,3 +15,14 @@
 .footer {
     grid-row:3/4
 }
+
+.up {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background-color: rgba(21, 54, 240, 0.37);
+    border: none;
+}
