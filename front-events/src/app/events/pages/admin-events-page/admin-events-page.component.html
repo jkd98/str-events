@@ -31,7 +31,7 @@
                 @if ( item.reservated ) {
                 <button (click)="anularReservacion(item._id!,item)" class="event-card__btn--reservado">Reservado</button>
                 }@else{
-                <button (click)="reservation(item._id!,item)" class="events__published">Reservar</button>
+                <button (click)="reservation(item._id!,item)" class="events__published">Reservar ahora</button>
                 }
                 }
             </div>
@@ -61,7 +61,7 @@
                         @if ( item.reservated ) {
                         <button (click)="anularReservacion(item._id!,item)" class="event-card__btn--reservado">Reservado</button>
                         }@else{
-                        <button (click)="reservation(item._id!,item)" class="events__published">Reservar</button>
+                        <button (click)="reservation(item._id!,item)" class="events__published" style="color:var(--color-fondo);">Reservar</button>
                         }
                     </div>
                 </div>

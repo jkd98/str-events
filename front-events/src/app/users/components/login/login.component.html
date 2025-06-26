@@ -31,9 +31,9 @@
       <a [routerLink]="['/users/recover-pass']" class="label-forgotp">¿Olvidaste tu contraseña?</a>
     </div>
 
-    <div *ngIf="usuarioService.error()" class="error">
+<!--     <div *ngIf="usuarioService.error()" class="error">
       {{ usuarioService.error() }}
-    </div>
+    </div> -->
   </form>
 </div>
 }@else if (usuarioService.fase()==='codigo') {
@@ -48,9 +48,9 @@
 
     <button type="submit" [disabled]="codigoForm.invalid">Iniciar sesión</button>
 
-    <div *ngIf="usuarioService.error()" class="error">
+    <!-- <div *ngIf="usuarioService.error()" class="error">
       {{ usuarioService.error() }}
-    </div>
+    </div> -->
   </form>
 </div>
 }

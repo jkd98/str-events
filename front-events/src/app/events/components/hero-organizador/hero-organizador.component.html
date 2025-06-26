@@ -1,12 +1,13 @@
 <section class="hero">
     <div class="hero__img">
         <div class="hero__txt">
-            <h4 class="hero__title">Suscríbete y recibe ofertas exclusivas antes que nadie</h4>
+            <h4 class="hero__title">¿Quieres conocer los nuevos eventos antes que nadie?</h4>
+            <p>Ingresa tu email y recibe las ultimas noticias</p>
         </div>
         <div class="heroForm">
             <form [formGroup]="susForm" style="display: flex; flex-direction: column;">
-                <input type="email" name="email" id="email" formControlName="email">
-                <button (click)="suscrip()">Suscribir</button>
+                <input type="email" name="email" id="email" formControlName="email" placeholder="tuemail@email.com">
+                <button (click)="suscrip()" [disabled]="susForm.invalid" >Suscríbete ahora</button>
             </form>
         </div>
     </div>

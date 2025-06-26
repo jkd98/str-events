@@ -30,6 +30,16 @@ export class RegistroUsuarioComponent implements OnInit {
   // Patrones de validación
   private emailPattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
   private phonePattern = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/;
+  private strongPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value || '';
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+
+    const valid = hasUpperCase && hasNumber && hasSpecialChar;
+
+    return valid ? null : { weakPassword: true };
+  };
 
   // Definir el validador primero
   private passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -49,7 +59,7 @@ export class RegistroUsuarioComponent implements OnInit {
     name: ['', [Validators.required, Validators.minLength(2)]],
     lastN: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
-    pass: ['', [Validators.required, Validators.minLength(6)]],
+    pass: ['', [Validators.required, Validators.minLength(6),this.strongPasswordValidator]],
     rpass: ['', [Validators.required]],
     address: ['', [Validators.required]],
     phone: ['', [Validators.pattern(this.phonePattern)]]
@@ -85,7 +95,7 @@ export class RegistroUsuarioComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error en el registro:', err);
-        alert('Ocurrió un error al registrar el usuario');
+        //alert('Ocurrió un error al registrar el usuario');
       }
     });
 

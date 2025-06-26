@@ -45,8 +45,10 @@ export class EditFormComponent implements OnInit {
       // Reiniciar categoría seleccionada al cambiar de área
       this.myForm.get('category')?.setValue('');
     });
+
     this.idEvent = this.route.snapshot.paramMap.get('id') || '';
     console.log(this.idEvent);
+    
     this.eventsService.obtenerEventoPorId(this.idEvent).subscribe((resp) => {
       console.log(resp);
       this.eventSelected = resp.data;

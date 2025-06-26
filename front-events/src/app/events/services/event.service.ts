@@ -19,7 +19,7 @@ export interface Evento {
   category?: string;
 }
 
-interface ApiResponse<T> {
+export interface ApiResponse<T> {
   status: string;
   msg: string;
   data: T;

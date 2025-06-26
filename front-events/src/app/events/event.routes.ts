@@ -9,6 +9,7 @@ import { CategorySportsComponent } from './pages/category-sports/category-sports
 import { CategoryInfoComponent } from './pages/category-info/category-info.component';
 import { CategoryCulturalComponent } from './pages/category-cultural/category-cultural.component';
 import { SiteMapComponent } from '../shared/components/site-map/site-map.component';
+import { infoBreadcrumbsResolver } from '../shared/resolvers/info-breadcrumbs.resolver';
 
 export const eventRoutes: Routes = [
     {
@@ -88,6 +89,7 @@ export const eventRoutes: Routes = [
             {
                 path: 'edit/:id',
                 component: EditFormComponent,
+                resolve:{ breadcrumb: infoBreadcrumbsResolver },
                 data: {
                     breadcrumb: 'Editar Evento',
                     icon: 'all-events',

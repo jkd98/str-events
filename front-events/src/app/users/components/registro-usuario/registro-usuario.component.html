@@ -42,6 +42,10 @@
       <div *ngIf="registroForm.controls['pass'].touched && registroForm.controls['pass'].invalid" class="error">
         <small *ngIf="registroForm.controls['pass'].errors?.['required']">La contraseña es obligatoria.</small>
         <small *ngIf="registroForm.controls['pass'].errors?.['minlength']">Mínimo 6 caracteres.</small>
+        <small *ngIf="registroForm.get('pass')?.hasError('weakPassword') && registroForm.get('pass')?.touched"
+        >
+          La contraseña debe incluir una mayúscula, un número y un carácter especial.
+        </small>
       </div>
     </div>
 
@@ -81,11 +85,12 @@
       <div id="recaptcha-container"></div>
     </div>
 
-    <button type="submit" [disabled]="registroForm.invalid">Registrarse</button>
+    <button type="submit" [disabled]="registroForm.invalid">Crear cuenta</button>
 
     <div class="form-campo">
-      <p>Al registrarte,estas aceptando nuestras 
-        <a href="https://www.freeprivacypolicy.com/live/8ec6e617-4884-4325-8797-a3b1befd3f22" target="_blank">Politicas de privacidad</a>
+      <p>Al registrarte,estas aceptando nuestras
+        <a href="https://www.freeprivacypolicy.com/live/8ec6e617-4884-4325-8797-a3b1befd3f22" target="_blank">Politicas
+          de privacidad</a>
       </p>
     </div>
   </form>

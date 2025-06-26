@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { UsuarioService } from '../../../users/services/usuario.service';
 import { tap } from 'rxjs';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-hero-organizador',
@@ -12,8 +12,9 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 export class HeroOrganizadorComponent {
   private usrServ = inject(UsuarioService);
   private fb = inject(FormBuilder);
-  susForm = this.fb.group({ email: [''] });
+  susForm = this.fb.group({ email: ['',[Validators.email,Validators.required]] });
   suscrip() {
+    
     const { email } = this.susForm.value;
     this.usrServ.suscrip(email!).pipe(
       tap({
