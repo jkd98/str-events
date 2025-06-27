@@ -4,9 +4,10 @@ import { UsuarioService } from '../../../users/services/usuario.service';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { DatePipe } from '@angular/common';
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 
 @Component({
-  imports: [DatePipe],
+  imports: [DatePipe,LoaderComponent],
   templateUrl: './category-info.component.html',
   styleUrl: './category-info.component.css'
 })
@@ -15,6 +16,7 @@ export class CategoryInfoComponent implements OnInit {
   private eventService = inject(EventService);
   private router = inject(Router);
   public baseURL = environment.apiUrl;
+  public loading = this.eventService.cargandoEventos;
 
 
 

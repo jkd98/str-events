@@ -2,13 +2,14 @@
 
     <h2 class="heading">Conciertos</h2>
     <!-- <app-filters></app-filters> -->
+    @if (!loading()) {
         @for(item of events(); track $index){
             @if (item.published) {
                 <div class="events">
                     <div class="events__img">
                         <img [src]="item.image ? item.image : 'no-image-available.webp' " alt="imagen del evento">
                     </div>
-        
+
                     <div class="events__info flex">
                         <p class="events__name">{{item.eventName}}</p>
                         <p class="events_capacity">Capacidad: {{item.maxCapacity}}</p>
@@ -19,17 +20,21 @@
                             <p class="events__category">{{item.category || 'NA'}}</p>
                         </div>
                     </div>
-        
+
                     <div class="events__actions flex">
                         <!--  -->
                         @if ( item.reservated ) {
                         <button (click)="anularReservacion(item._id!,item)" class="event-card__btn--reservado">Reservado</button>
                         }@else{
-                        <button (click)="reservation(item._id!,item)" class="events__published" style="color:var(--color-fondo);">Reservar ahora</button>
+                        <button (click)="reservation(item._id!,item)" class="events__published"
+                            style="color:var(--color-fondo);">Reservar ahora</button>
                         }
                     </div>
                 </div>
             }
         }
+    }@else {
+        <app-loader></app-loader>
+    }
 
 </div>
