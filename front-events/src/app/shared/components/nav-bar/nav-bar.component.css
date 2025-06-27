@@ -23,7 +23,7 @@
     font-weight: 200;
 }
 
-.logo__txt > span{
+.logo__txt>span {
     font-weight: 900;
 }
 
@@ -52,7 +52,7 @@
         margin: 0 auto;
 
     }
-   
+
 }
 
 
@@ -61,15 +61,15 @@
 .auth__signup {
     text-decoration: none;
     width: 100%;
-    color: var(--color-balnco);
+    color: var(--color-blanco);
     padding: 1rem .5rem;
     background-color: var(--color-fondo-dgr);
     text-align: center;
     font-weight: 600;
 }
 
-@media (min-width:768px){
-    .auth__login{
+@media (min-width:768px) {
+    .auth__login {
         background-color: transparent;
     }
 }
@@ -81,7 +81,7 @@
     transform: scale(1.05);
 }
 
-.active{
+.active {
     color: var(--color-btns);
 }
 
@@ -89,48 +89,86 @@
 
 /*dialog*/
 .dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
 
 .dialog-box {
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 10px;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  color: var(--color-fondo);
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    color: var(--color-fondo);
 }
 
 .dialog-actions {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-around;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
 }
 
 .dialog-actions button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
 }
 
 .dialog-actions button:first-child {
-  background-color: #f44336;
-  color: white;
+    background-color: #f44336;
+    color: white;
 }
 
 .dialog-actions button:last-child {
-  background-color: #4caf50;
-  color: white;
+    background-color: #4caf50;
+    color: white;
+}
+
+.submenu{
+    position: relative;
+    text-decoration: none;
+    width: 100%;
+    color: var(--color-blanco);
+    padding: 1rem .5rem;
+    background-color: var(--color-fondo-dgr);
+    text-align: center;
+    font-weight: 600;
+}
+
+.submenu-opciones {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.submenu span:hover{
+    color: var(--color-btns);
+}
+
+.submenu .submenu-opciones {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.submenu-opciones a {
+    color: var(--color-blanco);
+}
+
+.submenu-opciones a:hover {
+    color: var(--color-btns);
 }

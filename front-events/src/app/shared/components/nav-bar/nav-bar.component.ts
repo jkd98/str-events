@@ -32,6 +32,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   private timeoutMs = 2 * 60 * 1000; // 2 minutos
   showTimeoutDialog = signal(false); // para mostrar u ocultar el modal
 
+  submenuAbierto = false;
   private sessionEffect = effect(() => {
     const usr = this.user();
 
@@ -83,6 +84,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
 
 
+  toggleSubmenu() {
+    this.submenuAbierto = !this.submenuAbierto;
+  }
+  
   logout() {
     window.sessionStorage.removeItem(this.USR_KEY);
     this.userServ.user.set(null);

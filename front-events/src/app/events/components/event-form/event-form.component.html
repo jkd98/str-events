@@ -4,7 +4,7 @@
 
     <div class="form-campo">
       <label for="eventName">Nombre del evento:</label>
-      <input id="eventName" formControlName="eventName" />
+      <input (change)="search()" id="eventName" formControlName="eventName" />
       <div *ngIf="myForm.controls['eventName'].touched && myForm.controls['eventName'].invalid" class="error">
         <small *ngIf="myForm.controls['eventName'].errors?.['required']">El nombre es obligatorio.</small>
         <small *ngIf="myForm.controls['eventName'].errors?.['minlength']">Mínimo 3 caracteres.</small>
@@ -66,8 +66,12 @@
     </div>
 
     <button type="submit">Publicar Evento</button>
+    <div class="exists" #exists></div>
   </form>
+
+
 </div>
 
 <!-- Debug -->
 <!-- <pre>{{ myForm.value | json }}</pre> -->
+

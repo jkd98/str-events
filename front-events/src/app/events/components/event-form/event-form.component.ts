@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { EventService } from '../../services/event.service';
 import { CityService } from '../../../cities/services/cities.service';
@@ -26,6 +26,9 @@ export class EventFormComponent implements OnInit {
       this.myForm.get('category')?.setValue('');
     });
   }
+  @ViewChild('exists') existsDiv!: ElementRef;
+  public exist = false;
+
   private fb = inject(FormBuilder);
   private eventService = inject(EventService);
   private citiesService = inject(CityService);
@@ -35,7 +38,7 @@ export class EventFormComponent implements OnInit {
   areas = computed(this.areaService.areas);
   categories = [];
 
-  myForm: FormGroup = this.fb.group({
+  public myForm: FormGroup = this.fb.group({
     eventName: ['', [Validators.required, Validators.minLength(3)]],
     date: ['', Validators.required],
     city: ['', Validators.required],
@@ -92,5 +95,34 @@ export class EventFormComponent implements OnInit {
 
 
 
+  }
+
+  search() {
+    this.existsDiv.nativeElement.innerHTML = '';
+    let name = this.myForm.get('eventName')?.value;
+    let title = window.document.createElement("h2"); //creando h2
+    let subTitle = window.document.createElement("h3"); // creando h3
+
+
+    if(name!==''){
+      this.eventService.buscar({ nombre: name }).subscribe((res) => {
+        //console.log(res);
+        if (res.data.length > 0) {
+          title.innerText = "No puedes registrar el mismo evento";
+  
+          this.existsDiv.nativeElement.append(title); // agregando h2
+          this.existsDiv.nativeElement.style.visibility = "visible";
+          subTitle.innerText = `Hay ${res.data.length} posibles coincidencias:`
+          this.existsDiv.nativeElement.append(subTitle);// agregando h3
+          res.data.forEach(ev => {
+            const p = window.document.createElement('p');
+            p.innerText = '> '+ev.eventName;
+            this.existsDiv.nativeElement.append(p); //agregando coincidencias
+          })
+        } else {
+          this.existsDiv.nativeElement.style.visibility = "hidden";
+        }
+      });
+    }
   }
 }

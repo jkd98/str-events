@@ -6,11 +6,23 @@
 
     <div class="links">
         <a [routerLink]="['/events/all-events']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-            class="links__link">Ver Eventos</a>
-        <a [routerLink]="['/events/category/Conciertos']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-            class="links__link">Conciertos</a>
-        <a [routerLink]="['/events/category/Deportes']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-            class="links__link">Deportes</a>
+            class="links__link">Todos los Eventos</a>
+        <div (click)="toggleSubmenu()" class="submenu">
+            <span>Áreas de interés</span>
+            @if(submenuAbierto){
+            <div class="submenu-opciones">
+                <a [routerLink]="['/events/category/Conciertos']" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }" class="links__link">Conciertos</a>
+                <a [routerLink]="['/events/category/Deportes']" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }" class="links__link">Deportes</a>
+                <a [routerLink]="['/events/category/Culturales']" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }" class="links__link">Culturales</a>
+                <a [routerLink]="['/events/category/Informativos']" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }" class="links__link">Informativos</a>
+
+            </div>
+            }
+        </div>
         @if( user().role === ROLE ){
         <a [routerLink]="['/events/create']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
             class="links__link">Publicar Evento</a>
@@ -21,9 +33,11 @@
         @if( user()._id ){
         <a (click)="logout()" class="auth__login">Cerrar Sesión</a>
         } @else {
-        <a [routerLink]="['/users/login']" class="auth__login">Iniciar Sesión</a>
+        <a [routerLink]="['/users/login']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            class="auth__login">Iniciar Sesión</a>
         }
-        <a [routerLink]="['/users/signup']" class="auth__signup">Crear Cuenta</a>
+        <a [routerLink]="['/users/signup']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            class="auth__signup">Crear Cuenta</a>
     </div>
 </nav>
 
