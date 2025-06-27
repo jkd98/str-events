@@ -349,7 +349,7 @@ const verificarCodigo = async (req, res) => {
         res.cookie('_jwtn', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: 'None',
             maxAge: 1000 * 60 * 60 * 24 * 2
         });
 
@@ -374,7 +374,7 @@ const logoutUsuario = async (req, res) => {
         res.clearCookie('_jwtn', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict'
+            sameSite: 'None'
         });
 
         respuesta.status = 'success';
