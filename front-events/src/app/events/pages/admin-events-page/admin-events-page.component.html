@@ -27,13 +27,13 @@
                     class="events__published">{{item.published?'Publicado':'Oculto'}}</button>
                 <button (click)="onDelete(item._id!)" class="events__delete">Borrar</button>
                 <button (click)="onEdit(item._id!)" class="events__edit">Editar</button>
-                }@else {
+                }<!-- @else {
                 @if ( item.reservated ) {
                 <button (click)="anularReservacion(item._id!,item)" class="event-card__btn--reservado">Reservado</button>
                 }@else{
                 <button (click)="reservation(item._id!,item)" class="events__published">Reservar ahora</button>
                 }
-                }
+                } -->
             </div>
         </div>
         }
@@ -61,7 +61,7 @@
                         @if ( item.reservated ) {
                         <button (click)="anularReservacion(item._id!,item)" class="event-card__btn--reservado">Reservado</button>
                         }@else{
-                        <button (click)="reservation(item._id!,item)" class="events__published" style="color:var(--color-fondo);">Reservar</button>
+                        <button (click)="reservation(item._id!,item)" class="events__published" style="color:var(--color-fondo);">Reservar ahora</button>
                         }
                     </div>
                 </div>

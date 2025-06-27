@@ -8,6 +8,7 @@ const generarId = () => {
 
 
 
-const generarJWT = (datos) => jwt.sign({ id: datos.id, name: datos.name }, process.env.JWT_SECRET, { expiresIn: '1d' });
+//const generarJWT = (datos) => jwt.sign({ id: datos.id, name: datos.name }, process.env.JWT_SECRET, { expiresIn: '1d' });
+const generarJWT = (datos) => jwt.sign(datos, process.env.JWT_SECRET, { expiresIn: '1d' });
 
 export { generarId, generarJWT };

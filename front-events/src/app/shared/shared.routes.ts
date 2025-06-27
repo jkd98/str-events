@@ -10,6 +10,7 @@ export const sharedRoutes: Routes = [
                 path: 'msg-gnrl/:tkn',
                 component: MsgGeneralComponent,
                 data: {
+                    descripcion:'Pagina para avisar si el token ha sido valido',
                     breadcrumb: 'Mensaje del sitio',
                     icon: 'home',
                 },

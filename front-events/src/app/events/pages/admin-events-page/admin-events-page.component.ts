@@ -73,7 +73,8 @@ export class AdminEventsPageComponent implements OnInit {
 
   onEdit(id: string) {
     console.log('Editando:', id);
-    this.router.navigate(['/events/edit/', id]);
+    this.router.navigate(['/events/all-events/edit/', id]);
+    //this.router.navigate(['/events/edit/', id]);
   }
   onDelete(id: string) {
     console.log('Eliminando:', id);

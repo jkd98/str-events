@@ -18,7 +18,6 @@ import { BreadcrumbsT1Service } from '../../../shared/services/breadcrumbs-t1.se
 export class EventsHomePageComponent implements OnInit{
   public cookie = '';
   constructor(private breadServices:BreadcrumbsT1Service){
-    this.breadServices.clearHistory();
     
   }
   ngOnInit(): void {

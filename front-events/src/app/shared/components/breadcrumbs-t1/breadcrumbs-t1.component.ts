@@ -14,9 +14,6 @@ export class BreadcrumbsT1Component {
   
   breadService = inject(BreadcrumbsT1Service);
   breadcrumbs = this.breadService.breadcrumbSignal;
-  clearHistory(){
-    this.breadService.clearHistory();
-  }
 
   
 

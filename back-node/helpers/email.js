@@ -10,7 +10,7 @@ const emailRegistro = async (datos) => {
             pass: process.env.EMAIL_PASS
         }
     });
-    console.log(datos);
+    //console.log(datos);
     const { email, name, token } = datos;
     const domainn = 'EventStar.com'
 
@@ -21,7 +21,7 @@ const emailRegistro = async (datos) => {
         <></>
         <p>Hola ${name}, comprueba tu cuenta en ${domainn}</p>
         <p>Tu cuenta ya esta casi lista, solo debes confirmarla en el siguiente enlace: 
-        <a href="${reff}/users/confirm/${token}" >Confirmar Cuenta</a> </p>
+        <a href="${reff}/#/users/confirm/${token}" >Confirmar Cuenta</a> </p>
         <p>Si tu no creaste esta cuenta, puedes ignorar el mensaje</p>
     `;
     //Enviar
@@ -45,7 +45,7 @@ const emailOlvidePass = async (datos) => {
             pass: process.env.EMAIL_PASS
         }
     });
-    console.log(datos);
+    //console.log(datos);
     const { email, name, token } = datos;
     const domainn = 'EventStar.com'
 
@@ -58,7 +58,7 @@ const emailOlvidePass = async (datos) => {
         <></>
         <p>Hola ${name}, haz solicitado cambiar tu password en ${domainn}</p>
         <p>Sigue el siguiente enlace para generar un password nuevo:
-        <a href="${reff}/shared/msg-gnrl/${token}" >Reestablecer Password</a> </p>
+        <a href="${reff}/#/shared/msg-gnrl/${token}" >Reestablecer Password</a> </p>
         <p>Si tu no solicitaste el cambio de contraseña, puedes ignorar el mensaje</p>
     `;
     //Enviar

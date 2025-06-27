@@ -56,12 +56,12 @@ export class RegistroUsuarioComponent implements OnInit {
 
   // Luego definir el FormGroup que lo usa
   registroForm: FormGroup = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    lastN: ['', [Validators.required, Validators.minLength(2)]],
-    email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
-    pass: ['', [Validators.required, Validators.minLength(6),this.strongPasswordValidator]],
-    rpass: ['', [Validators.required]],
-    address: ['', [Validators.required]],
+    name: ['jose', [Validators.required, Validators.minLength(2)]],
+    lastN: ['atole', [Validators.required, Validators.minLength(2)]],
+    email: ['josesitoelalto@gmail.com', [Validators.required, Validators.pattern(this.emailPattern)]],
+    pass: ['Pass*12', [Validators.required, Validators.minLength(6),this.strongPasswordValidator]],
+    rpass: ['Pass*12', [Validators.required]],
+    address: ['Av. Ilinois', [Validators.required]],
     phone: ['', [Validators.pattern(this.phonePattern)]]
   }, { validators: this.passwordMatchValidator });
 

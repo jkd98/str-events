@@ -7,6 +7,6 @@ export const infoBreadcrumbsResolver: ResolveFn<Observable<string>> = (route, st
   const id = route.params['id'];
   const eventService = inject(EventService);
   return eventService.obtenerEventoPorId(id).pipe(
-    map(res => res.data['eventName'])
+    map(res => 'Editar evento: ' + res.data['eventName'])
   );
 };

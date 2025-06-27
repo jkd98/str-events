@@ -39,11 +39,12 @@ const usuarioSchema = mongoose.Schema(
             match: [/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/, "Teléfono no válido"]
         },
         token: {
-            type: String
+            type: String,
+            default:''
         },
         confirm: {
             type: Boolean,
-            default: false
+            default: true
         },
         role: {
             type: String,

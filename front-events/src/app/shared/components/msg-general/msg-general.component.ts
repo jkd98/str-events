@@ -41,11 +41,10 @@ export class MsgGeneralComponent implements OnInit {
         }
       })
     ).subscribe();
-
   }
 
-  onClose(ruta: string) {
-    this.router.navigate([ruta]);
+  onClose() {
+    this.router.navigate([this.ruta]);
   }
 
 }

@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
+import { EventsLayoutComponent } from './events/pages/events-layout/events-layout.component';
 
 export const routes: Routes = [
     {
         path:'events',
+        component:EventsLayoutComponent,
         loadChildren: () => import('./events/event.routes').then(m=>m.eventRoutes)
     },
     {

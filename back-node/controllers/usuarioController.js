@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
 
 import Usuario from "../models/Usuario.js";
 import { generarId, generarJWT } from "../helpers/generarId.js";
@@ -17,7 +18,7 @@ const registrarUsuario = async (req, res, next) => {
 
     try {
         const { pass, ...userData } = req.body;
-        console.log(req.body);
+        //console.log(req.body);
 
         // Verificar si el email ya está registrado
         const existeUsuario = await Usuario.findOne({ email: userData.email });
@@ -31,26 +32,33 @@ const registrarUsuario = async (req, res, next) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(pass, salt);
 
-        // Crear el usuario
+        /* // Crear el usuario
         const usuario = new Usuario({
             ...userData,
             pass: hashedPassword,
             token: generarId()
-        });
+        }); */
+        const payload = {
+            ...userData,
+            pass: hashedPassword,
+        }
 
-        await usuario.save();
+        //await usuario.save();
+        //console.log('Usuario nuevo \n', payload);
+        const { email, name } = payload;
+        const token = generarJWT(payload);
 
-        const { email, name, token } = usuario;
+
 
         emailRegistro({ email, name, token });
 
         respuesta.status = 'success';
-        respuesta.msg = 'Usuario registrado correctamente';
-        respuesta.data = { id: usuario._id };
+        respuesta.msg = 'Registro completado, enviando token de confirmación';
+        respuesta.data = null;
         res.status(201).json(respuesta);
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al registrar el usuario';
         res.status(500).json(respuesta);
@@ -64,24 +72,39 @@ const confirmarUsuario = async (req, res) => {
     try {
         const { token } = req.params;
 
-        const usuario = await Usuario.findOne({ token });
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        //console.log(decoded);
+        // Buscar al usuario
+        const usuario = await Usuario.findOne({ email: decoded.email })
 
-        if (!usuario) {
+        if (usuario) {
             respuesta.status = 'error';
-            respuesta.msg = 'Token inválido o usuario ya confirmado';
+            respuesta.msg = 'El correo ya esta confirmado';
             return res.status(400).json(respuesta);
         }
 
-        usuario.confirm = true;
+        /* usuario.confirm = true;
         usuario.token = ""; // Limpia el token
-        await usuario.save();
+        await usuario.save(); */
+
+        const { name, lastN, email, address, pass } = decoded;
+        const nwUser = new Usuario({
+            name,
+            lastN, 
+            email,
+            address,
+            pass,
+        });
+
+        //console.log('nuevo \n',nwUser);
+        await nwUser.save();
 
         respuesta.status = 'success';
         respuesta.msg = 'Cuenta confirmada correctamente';
         res.json(respuesta);
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al confirmar la cuenta';
         res.status(500).json(respuesta);
@@ -100,7 +123,7 @@ const listarUsuarios = async (req, res, next) => {
         respuesta.data = usuarios;
         res.json(respuesta);
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al listar usuarios';
         res.status(500).json(respuesta);
@@ -126,7 +149,7 @@ const obtenerUsuario = async (req, res, next) => {
         respuesta.data = usuario;
         res.json(respuesta);
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al obtener el usuario';
         res.status(500).json(respuesta);
@@ -164,7 +187,7 @@ const editarUsuario = async (req, res, next) => {
         res.json(respuesta);
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al actualizar el usuario';
         res.status(500).json(respuesta);
@@ -192,7 +215,7 @@ const eliminarUsuario = async (req, res, next) => {
         res.json(respuesta);
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al eliminar el usuario';
         res.status(500).json(respuesta);
@@ -275,7 +298,7 @@ const loginUsuario = async (req, res) => {
         return res.json(respuesta);
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al iniciar sesión';
         res.status(500).json(respuesta);
@@ -336,7 +359,7 @@ const verificarCodigo = async (req, res) => {
         res.json(respuesta);
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al verificar el código';
         res.status(500).json(respuesta);
@@ -359,7 +382,7 @@ const logoutUsuario = async (req, res) => {
         res.json(respuesta);
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al cerrar sesión';
         res.status(500).json(respuesta);
@@ -406,7 +429,7 @@ const resetPasswordToken = async (req, res) => {
         res.json(respuesta);
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Hubo un error al generar el token';
         res.status(500).json(respuesta);
@@ -434,7 +457,7 @@ const comprobarResetToken = async (req, res) => {
         res.json(respuesta);
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al validar el token';
         respuesta.data = false;
@@ -483,7 +506,7 @@ const nuevoPassword = async (req, res) => {
         res.json(respuesta);
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         respuesta.status = 'error';
         respuesta.msg = 'Error al reestablecer el password';
         res.status(500).json(respuesta);

@@ -1,6 +1,6 @@
 <div class="capa">
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" class="login-form" >
-    <h2 class="form-heading">Editar Evento</h2>
+    <h2 class="form-heading">Editar Evento: {{myForm.controls['eventName'].value}} </h2>
 
     <div class="form-campo">
       <label for="eventName">Nombre del evento:</label>
