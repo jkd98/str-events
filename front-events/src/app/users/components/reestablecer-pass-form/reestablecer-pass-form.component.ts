@@ -18,12 +18,27 @@ export class ReestablecerPassFormComponent implements OnInit {
   showTimeoutDialog = signal(false); // para mostrar u ocultar el modal
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+
+  private strongPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value || '';
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+
+    const valid = hasUpperCase && hasNumber && hasSpecialChar;
+
+    return valid ? null : { weakPassword: true };
+  };
+
   // Definir el validador primero
   private passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const pass = control.get('pass');
     const rpass = control.get('rpass');
     return pass && rpass && pass.value !== rpass.value ? { passwordsNotMatch: true } : null;
   };
+
+
+
   private id = '';
   public msg = '';
   private ruta = '';
@@ -31,7 +46,7 @@ export class ReestablecerPassFormComponent implements OnInit {
 
 
   recuperarForm: FormGroup = this.fb.group({
-    pass: ['', [Validators.required, Validators.minLength(6)]],
+    pass: ['', [Validators.required, Validators.minLength(6),this.strongPasswordValidator]],
     rpass: ['', [Validators.required]],
   }, { validators: this.passwordMatchValidator });
 
@@ -44,9 +59,9 @@ export class ReestablecerPassFormComponent implements OnInit {
       this.recuperarForm.markAllAsTouched();
       return;
     }
-    const { pass,rpass } = this.recuperarForm.value;
+    const { pass, rpass } = this.recuperarForm.value;
 
-    this.usuarioService.reestablecerPass(this.id, pass,rpass).pipe(
+    this.usuarioService.reestablecerPass(this.id, pass, rpass).pipe(
       tap({
         next: (res) => {
           if (res.status === 'success') {

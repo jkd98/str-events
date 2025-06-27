@@ -253,7 +253,7 @@ export class EventService {
     }
 
 
-    return this.http.get<ApiResponse<Evento[]>>(`${environment.apiUrl}/events/buscar`,{params})
+    return this.http.get<ApiResponse<Evento[]>>(`${environment.apiUrl}/events/buscar`, { params })
       .pipe(
         tap({
           next: (resp) => {
@@ -261,8 +261,11 @@ export class EventService {
               this.eventos.set(resp.data);
               //this.router.navigate(['/events/all-events']);
               console.log(this.eventos());
+              this.cargandoEventos.set(false);
             } else {
               this.error.set(resp.msg);
+              this.cargandoEventos.set(false);
+
             }
             this.cargandoEventos.set(false);
           },

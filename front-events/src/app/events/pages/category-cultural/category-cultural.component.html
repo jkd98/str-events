@@ -2,7 +2,7 @@
 
     <h2 class="heading">Culturales</h2>
     <!-- <app-filters></app-filters> -->
-    @if(!loading){
+    @if(!loading()){
 
         @for(item of events(); track $index){
             @if (item.published) {
